@@ -4,13 +4,24 @@ import { Radio } from 'semantic-ui-react';
 
 const TOGGLE_CONTEXT = '__toggle__';
 
-function ToggleOn({ children }, context) {
+function withToggle(WrappedComponent) {
+  function Wrapper(props, context) {
+    const toggleContext = context[TOGGLE_CONTEXT];
+
+    return <WrappedComponent toggle {...toggleContext} {...props} />;
+  }
+  Wrapper.contextTypes = {
+    [TOGGLE_CONTEXT]: PropTypes.object.isRequired,
+  };
+
+  return Wrapper;
+}
+
+export const ToggleOn = withToggle(({ children, on }) => {
   const { on } = context[TOGGLE_CONTEXT];
   return on ? children : null;
-}
-ToggleOn.contextTypes = {
-  [TOGGLE_CONTEXT]: PropTypes.object.isRequired,
-};
+});
+
 function ToggleOff({ children }, context) {
   const { on } = context[TOGGLE_CONTEXT];
   return on ? null : children;
@@ -18,6 +29,7 @@ function ToggleOff({ children }, context) {
 ToggleOff.contextTypes = {
   [TOGGLE_CONTEXT]: PropTypes.object.isRequired,
 };
+
 function ToggleButton(props, context) {
   const { toggle } = context[TOGGLE_CONTEXT];
 
@@ -26,6 +38,13 @@ function ToggleButton(props, context) {
 ToggleButton.contextTypes = {
   [TOGGLE_CONTEXT]: PropTypes.object.isRequired,
 };
+
+
+export const MyToggleButton = withToggle(({ on, toggle }) => (
+  <button onClick={toggle}>
+    {on ? 'on' : 'off'}
+  </button>
+));
 
 class Toggle extends Component {
     static On = ToggleOn

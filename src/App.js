@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Toggle from './toggle';
+import Toggle, { MyToggleButton } from './toggle';
 
 
 class App extends Component {
@@ -10,9 +10,7 @@ class App extends Component {
   render() {
     return (
       <Toggle onToggle={this.logToogle}>
-        <div>
-          <Toggle.Button />
-        </div>
+        <MyToggleButton />
         <Toggle.On>The button is on</Toggle.On>
         <Toggle.Off>The button is off</Toggle.Off>
       </Toggle>
